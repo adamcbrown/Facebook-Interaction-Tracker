@@ -7,6 +7,7 @@ require 'sinatra/base'
 
 class MyApp < Sinatra::Base
   get '/' do
+    set :server, 'webrick'
     erb :index # This tells your program to use the html associated with the index.erb file in your browser.
   end
 

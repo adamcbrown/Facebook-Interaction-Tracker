@@ -2,6 +2,7 @@ require 'bundler' #require bundler
 Bundler.require #require everything in bundler in gemfile
 require_relative './lib/facebook_scraper.rb'
 require_relative './lib/mailgun.rb'
+require 'sinatra'
 
 before do
   configure do

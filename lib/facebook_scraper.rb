@@ -8,6 +8,7 @@ class FacebookScraper
   attr_reader :user_name
   attr_reader :status
   attr_reader :all_names
+  attr_reader :done
 
   #doc.css(".fbxWelcomeBoxName").children.first.text -- returns name from facebook home page
   #doc.css("._8_2").children.text -- gets name from profile page
@@ -76,6 +77,8 @@ class FacebookScraper
   end
 
   def update_names(numberOfNames)
+    puts "start"
+    @done=false
     refresh
     if @status=="Login Failed"
       return 
@@ -94,6 +97,7 @@ class FacebookScraper
     end
 
     @all_names=@names.values
+    @done=true
   end
 
   def email_body

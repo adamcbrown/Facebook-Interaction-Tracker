@@ -12,7 +12,6 @@ post '/' do
   puts params[:email]
   if params[:email] and params[:password]
     @facebook_scraper=FacebookScraper.new(params[:email], params[:password])
-    @facebook_scraper.update_names(20) 
   end
   erb :index
 end

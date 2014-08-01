@@ -1,5 +1,5 @@
-require 'capybara-webkit'
 require 'capybara/dsl'
+require 'selenium-webdriver'
 require "nokogiri"
 
 
@@ -7,7 +7,7 @@ require "nokogiri"
 class FacebookScraper
 
   include Capybara::DSL
-  Capybara.current_driver = :webkit
+  Capybara.current_driver = :selenium
 
   attr_reader :user_name
   attr_reader :status

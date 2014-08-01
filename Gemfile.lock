@@ -7,16 +7,16 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
-    capybara-webkit (1.2.0)
-      capybara (>= 2.0.2, < 2.4.0)
-      json
+    childprocess (0.5.3)
+      ffi (~> 1.0, >= 1.0.11)
     coderay (1.1.0)
-    json (1.8.1)
+    ffi (1.9.3)
     mailgun (0.8)
       rest-client
     method_source (0.8.2)
     mime-types (2.3)
     mini_portile (0.6.0)
+    multi_json (1.10.1)
     netrc (0.7.7)
     nokogiri (1.6.3.1)
       mini_portile (= 0.6.0)
@@ -33,6 +33,12 @@ GEM
     rest-client (1.7.2)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
+    rubyzip (1.1.6)
+    selenium-webdriver (2.42.0)
+      childprocess (>= 0.5.0)
+      multi_json (~> 1.0)
+      rubyzip (~> 1.0)
+      websocket (~> 1.0.4)
     shotgun (0.9)
       rack (>= 1.0)
     sinatra (1.4.5)
@@ -41,6 +47,7 @@ GEM
       tilt (~> 1.3, >= 1.3.4)
     slop (3.6.0)
     tilt (1.4.1)
+    websocket (1.0.7)
     xpath (2.0.0)
       nokogiri (~> 1.3)
 
@@ -49,10 +56,10 @@ PLATFORMS
 
 DEPENDENCIES
   capybara
-  capybara-webkit
   mailgun
   nokogiri
   pry
   rake
+  selenium-webdriver
   shotgun
   sinatra

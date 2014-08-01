@@ -1,13 +1,9 @@
-require 'capybara/dsl'
-require 'capybara/poltergeist'
+require "mechanize"
 require "nokogiri"
 
 
 # login
 class FacebookScraper
-
-  include Capybara::DSL
-  Capybara.current_driver = :poltergeist
 
   attr_reader :user_name
   attr_reader :status
@@ -20,36 +16,38 @@ class FacebookScraper
   def initialize(email, password)
     @email=email
     @password=password
+    @agent=Mechanize.new
     login
   end
 
   def login
-    visit("https://www.facebook.com")
-    find("#email").set(@email)
-    find("#pass").set(@password)
-    find("#loginbutton").click
-    if Nokogiri::HTML.parse(body).css(".uiHeaderTitle").children.text =="Facebook Login"
+    @agent.get("https://www.facebook.com")
+    form=@agent.page.forms[0]
+    form["email"]=@email
+    form["pass"]=@password
+    form.submit
+    if Nokogiri::HTML.parse(@agent.page.body).css(".uiHeaderTitle").children.text =="Facebook Login"
       @status="Login Failed"
       return;
     else
       @status="Login Successful"
     end
     
-    home_page = Nokogiri::HTML.parse(body)
+    home_page = Nokogiri::HTML.parse(@agent.page.body)
     @user_name = home_page.css(".fbxWelcomeBoxName").children.first.text
-    visit(home_page.css("._6a ._6b").children.first.attributes["href"].value)
-    @profile_page = Nokogiri::HTML.parse(body)
+    @agent.get(home_page.css("._6a ._6b").children.first.attributes["href"].value)
+    @profile_page = Nokogiri::HTML.parse(@agent.page.body)
   end
 
   def refresh
-    visit("https://www.facebook.com")
-    if Nokogiri::HTML.parse(body).at_css(".fbxWelcomeBoxName")==nil
+    @agent.get("https://www.facebook.com")
+    if Nokogiri::HTML.parse(@agent.page.body).at_css(".fbxWelcomeBoxName")==nil
       login
     else
-      home_page = Nokogiri::HTML.parse(body)
+      home_page = Nokogiri::HTML.parse(@agent.page.body)
       @user_name = home_page.css(".fbxWelcomeBoxName").children.first.text
-      visit(home_page.css("._6a ._6b").children.first.attributes["href"].value)
-      @profile_page = Nokogiri::HTML.parse(body)
+      @agent.get(home_page.css("._6a ._6b").children.first.attributes["href"].value)
+      @profile_page = Nokogiri::HTML.parse(@agent.page.body)
     end
   end
 
@@ -88,8 +86,8 @@ class FacebookScraper
     @names={}
 
     @interactions.each do |id|
-      visit("https://www.facebook.com/profile.php?id=#{id}")
-      friendPage=Nokogiri::HTML.parse(body)
+      @agent.get("https://www.facebook.com/profile.php?id=#{id}")
+      friendPage=Nokogiri::HTML.parse(@agent.page.body)
       @names[id]=friendPage.css("._8_2").children.text
     end
 
@@ -101,7 +99,7 @@ class FacebookScraper
     if @prev_interactions 
       body+="Previously, the people that interacted the most with your account were:\n"
       for i in 0...@prev_interactions.length
-        body+="#{i+1}: #{@prev_names[@prev_interactions[i]]}\n"
+       body+="#{i+1}: #{@prev_names[@prev_interactions[i]]}\n"
       end
     end
 

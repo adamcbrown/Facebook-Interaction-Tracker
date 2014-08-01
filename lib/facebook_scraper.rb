@@ -39,6 +39,7 @@ class FacebookScraper
     @user_name = home_page.css(".fbxWelcomeBoxName").children.first.text
     @agent.get(home_page.css("._6a ._6b").children.first.attributes["href"].value)
     @profile_page = @agent.page.parser
+    puts @profile_page
   end
 
   def refresh
@@ -56,7 +57,7 @@ class FacebookScraper
   #returns an array of friend interactions (requires scrapping)
   def get_interactions(numberOfInteractions)
 
-    text=@profile_page.css("script").children[7].text
+    text=@profile_page.css("script").children[3].text
     text=text[text.index("FriendsList"), text.length]
     text=text[text.index("[\""), text.index("}")-text.index("[\"")]
     #The string is now reduced to "[ \"ids\", \"are\", \"here\" ]"

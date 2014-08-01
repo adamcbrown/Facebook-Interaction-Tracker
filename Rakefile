@@ -1,5 +1,5 @@
-require_relative "facebook_scraper.rb"
-require_relative "mailgun.rb"
+require_relative "./lib/facebook_scraper.rb"
+require_relative "./lib/mailgun.rb"
 require 'io/console'
 
 task :send_data do

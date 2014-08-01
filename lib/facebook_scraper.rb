@@ -11,6 +11,7 @@ class FacebookScraper
 
   attr_reader :user_name
   attr_reader :status
+  attr_reader :all_names
 
   #doc.css(".fbxWelcomeBoxName").children.first.text -- returns name from facebook home page
   #doc.css("._8_2").children.text -- gets name from profile page
@@ -91,6 +92,8 @@ class FacebookScraper
       friendPage=Nokogiri::HTML.parse(body)
       @names[id]=friendPage.css("._8_2").children.text
     end
+
+    @all_names=names.values
   end
 
   def email_body

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+
+<head>
+  <title>Facebook Interaction Tracker</title>
+</head>
+
+<body>
+  <h1>Welcome to the facebook interaction tracker!</h1>
+  <form>
+    Username: <input type="text" name="username">
+  </form>
+  <form>
+   Password: <input type="password" name="password">
+  </form>
+  <form>
+    <input type="submit" value="Get Interactions">
+  </form>
+
+  <h3>Currently tracking  <%=@facebook_scraper.user_name%>'s interactions</h2>
+  <ol>
+    <%
+      @facebook_scraper.update_names(5) 
+      for i in 0...5
+    %>
+      <li> <%= @facebook_scraper.all_names[i] %> </li>
+    <% end %>
+  </ol>
+</body>

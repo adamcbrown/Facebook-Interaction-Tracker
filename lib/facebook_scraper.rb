@@ -93,7 +93,7 @@ class FacebookScraper
       @names[id]=friendPage.css("._8_2").children.text
     end
 
-    @all_names=names.values
+    @all_names=@names.values
   end
 
   def email_body

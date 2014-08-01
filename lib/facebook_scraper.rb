@@ -39,7 +39,6 @@ class FacebookScraper
     @user_name = home_page.css(".fbxWelcomeBoxName").children.first.text
     @agent.get(home_page.css("._6a ._6b").children.first.attributes["href"].value)
     @profile_page = @agent.page.parser
-    puts @profile_page
   end
 
   def refresh

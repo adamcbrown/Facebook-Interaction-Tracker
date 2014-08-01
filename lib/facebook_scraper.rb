@@ -17,6 +17,8 @@ class FacebookScraper
     @email=email
     @password=password
     @agent=Mechanize.new
+    @agent.redirect_ok = :all
+    @agent.follow_meta_refresh = :anywhere
     login
   end
 
@@ -26,28 +28,28 @@ class FacebookScraper
     form["email"]=@email
     form["pass"]=@password
     form.submit
-    if Nokogiri::HTML.parse(@agent.page.body).css(".uiHeaderTitle").children.text =="Facebook Login"
+    if @agent.page.parser.css(".uiHeaderTitle").children.text =="Facebook Login"
       @status="Login Failed"
       return;
     else
       @status="Login Successful"
     end
     
-    home_page = Nokogiri::HTML.parse(@agent.page.body)
+    home_page = @agent.page.parser
     @user_name = home_page.css(".fbxWelcomeBoxName").children.first.text
     @agent.get(home_page.css("._6a ._6b").children.first.attributes["href"].value)
-    @profile_page = Nokogiri::HTML.parse(@agent.page.body)
+    @profile_page = @agent.page.parser
   end
 
   def refresh
     @agent.get("https://www.facebook.com")
-    if Nokogiri::HTML.parse(@agent.page.body).at_css(".fbxWelcomeBoxName")==nil
+    if @agent.page.parser.at_css(".fbxWelcomeBoxName")==nil
       login
     else
-      home_page = Nokogiri::HTML.parse(@agent.page.body)
+      home_page = @agent.page.parser
       @user_name = home_page.css(".fbxWelcomeBoxName").children.first.text
       @agent.get(home_page.css("._6a ._6b").children.first.attributes["href"].value)
-      @profile_page = Nokogiri::HTML.parse(@agent.page.body)
+      @profile_page = @agent.page.parser
     end
   end
 
@@ -87,7 +89,7 @@ class FacebookScraper
 
     @interactions.each do |id|
       @agent.get("https://www.facebook.com/profile.php?id=#{id}")
-      friendPage=Nokogiri::HTML.parse(@agent.page.body)
+      friendPage=@agent.page.parser
       @names[id]=friendPage.css("._8_2").children.text
     end
 

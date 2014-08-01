@@ -3,7 +3,7 @@ require_relative "mailgun.rb"
 require 'io/console'
 
 task :send_data do
-  @facebook_scraper=FacebookScraper.new("adamcbrown1997@gmail.com", ENV["FB_PASSWORD"])
+  @facebook_scraper=FacebookScraper.new(ENV["FB_EMAIL"], ENV["FB_PASSWORD"])
   @email_helper=MailgunHelper.new('key-b22a95527034e086108a9e66c0c5a807', 'sandboxdf010bb13e0c496da784c83c9aa6f1f2.mailgun.org')
 
   if(@facebook_scraper.status=="Login Successful")

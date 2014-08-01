@@ -3,8 +3,13 @@ Bundler.require #require everything in bundler in gemfile
 require_relative './lib/facebook_scraper.rb'
 require_relative './lib/mailgun.rb'
 
+before do
+  configure do
+    set :server, 'thin'
+  end
+end
+
 get '/' do
-  set :server, 'thin'
   erb :index # This tells your program to use the html associated with the index.erb file in your browser.
 end
 

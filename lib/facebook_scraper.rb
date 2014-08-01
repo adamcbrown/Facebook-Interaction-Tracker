@@ -1,13 +1,9 @@
-require 'capybara/dsl'
-require 'capybara/poltergeist'
+require "mechanize"
 require "nokogiri"
 
 
 # login
 class FacebookScraper
-
-  include Capybara::DSL
-  Capybara.current_driver = :poltergeist
 
   attr_reader :user_name
   attr_reader :status
@@ -20,12 +16,13 @@ class FacebookScraper
   def initialize(email, password)
     @email=email
     @password=password
+    @agent=Mechanize.new
     login
   end
 
   def login
-    visit("https://www.facebook.com")
-    find("#email").set(@email)
+    page=agent.get("https://www.facebook.com")
+    page.find("#email").set(@email)
     find("#pass").set(@password)
     find("#loginbutton").click
     if Nokogiri::HTML.parse(body).css(".uiHeaderTitle").children.text =="Facebook Login"

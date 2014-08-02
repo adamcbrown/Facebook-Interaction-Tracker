@@ -21,13 +21,6 @@
 
   <%
     if @facebook_scraper
-      Thread.new do
-        @facebook_scraper.update_names(20)
-      end
-
-      until @facebook_scraper.done
-        sleep(1)
-      end
       if @facebook_scraper.status=="Login Successful"
   %>
         <h3>Currently tracking  <%=@facebook_scraper.user_name%>'s interactions</h2>
